@@ -38,3 +38,8 @@ export interface Order {
       bs: string;
     };
   }
+
+  export interface UserContextType {
+    selectedUser: User | null;
+    setSelectedUser: (user: User | null) => void;
+  }
