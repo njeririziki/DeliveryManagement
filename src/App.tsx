@@ -1,16 +1,11 @@
-//import IndividualOrder from "./pages/IndividualOrder"
-//import UsersTable from "./pages/Users"
-//import Orders from "./pages/Orders"
-import IndividualUser from "./pages/IndividualUser"
+import Routing from "./pages/Routing"
+
 
 function App() {
-
-
   return (
-    <>
-     <IndividualUser />
-    </>
-  )
+    <Routing />
+  );
 }
+
 
 export default App
