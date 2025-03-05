@@ -1,17 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Users from "./Users";
-import IndividualUser from "./IndividualUser";
+import UserDetails from "./UserDetails";
 import Orders from "./Orders";
-import IndividualOrder from "./IndividualOrder";
+import OrderDetails from "./OrderDetails";
+import DeliveryOverview from "./DeliveryOverview";
 
 function Routing() {
   return (
     <Router>
       <Routes>
         <Route path="/users" element={<Users />} />
-        <Route path="/users/:id" element={<IndividualUser />} />
+        <Route path="/users/:id" element={<UserDetails />} />
         <Route path="/orders" element={<Orders />} />
-        <Route path="/orders/:id" element={<IndividualOrder />} />
+        <Route path="/orders/:id" element={<OrderDetails />} />
+        <Route path="/delivery" element={<DeliveryOverview />} />
       </Routes>
     </Router>
   );

@@ -1,5 +1,6 @@
-import React, {  useState } from 'react';
+//import React, {  useState } from 'react';
 import { Descriptions, Typography } from 'antd';
+import Map from '../components/map/Map';
 //import { User } from '../types';
 
 const user ={
@@ -22,14 +23,14 @@ const user ={
         
       }
 
-const IndividualUser = () => {
+const UserDetails = () => {
   //  const [user, setuser] = useState<User | null>(null);
 
     return ( 
      <div>
             <Typography.Title level={2}>User</Typography.Title>
             {user ? (
-
+               <>
                 <Descriptions title="User Info" bordered>
                     <Descriptions.Item label="Name">{user.name}</Descriptions.Item>
                     <Descriptions.Item label="Username">{user.username}</Descriptions.Item>
@@ -39,6 +40,8 @@ const IndividualUser = () => {
                     <Descriptions.Item label="Address">{user.address.street}, {user.address.suite}, {user.address.city}, {user.address.zipcode}</Descriptions.Item>
                     <Descriptions.Item label="Zipcode">{user.address.zipcode}</Descriptions.Item>
                 </Descriptions>
+                <Map/>
+                </>
             ) : (
                 <Typography.Text>Loading...</Typography.Text>
             )}
@@ -46,4 +49,4 @@ const IndividualUser = () => {
      );
 }
  
-export default IndividualUser;
+export default UserDetails;
