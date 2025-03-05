@@ -1,15 +1,11 @@
-import IndividualOrder from "./pages/IndividualOrder"
-//import Orders from "./pages/Orders"
+import Routing from "./pages/Routing"
 
 
 function App() {
-
-
   return (
-    <>
-     <IndividualOrder />
-    </>
-  )
+    <Routing />
+  );
 }
+
 
 export default App
