@@ -19,6 +19,8 @@ export interface Order {
     name: string;
     username: string;
     email: string;
+    phone: string;
+    website: string;
     address: {
       street: string;
       suite: string;
@@ -29,8 +31,7 @@ export interface Order {
         lng: string;
       };
     };
-    phone: string;
-    website: string;
+   
     company: {
       name: string;
       catchPhrase: string;

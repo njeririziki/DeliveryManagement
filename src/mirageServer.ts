@@ -135,6 +135,10 @@ export function makeServer({ environment = "development" } = {}) {
         const attrs = JSON.parse(request.requestBody);
         return schema.create("order", attrs);
       });
+
+      this.passthrough('https://jsonplaceholder.typicode.com/**');
     },
   });
+
+
 }
