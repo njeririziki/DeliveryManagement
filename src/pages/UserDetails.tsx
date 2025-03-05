@@ -43,7 +43,7 @@ const UserDetails = () => {
                     <Descriptions.Item label="Address">{selectedUser.address.street}, {selectedUser.address.suite}, {selectedUser.address.city}, {selectedUser.address.zipcode}</Descriptions.Item>
                     <Descriptions.Item label="Zipcode">{selectedUser.address.zipcode}</Descriptions.Item>
                 </Descriptions>
-                <Map/>
+                <Map data={[+selectedUser.address.geo.lng, +selectedUser.address.geo.lat ]}/>
                 </>
             ) : (
                 <Typography.Text>Loading...</Typography.Text>
