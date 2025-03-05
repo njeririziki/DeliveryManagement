@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "antd": "^5.24.2",
+    "axios": "^1.8.1",
+    "mapbox-gl": "^3.10.0",
     "miragejs": "^0.1.48",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
