@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Descriptions, Typography } from 'antd';
 import { Order } from '../types';
+import { useParams } from 'react-router-dom';
 
 const fetchSpecificOrderData = async (id: number): Promise<Order> => {
     try {
@@ -20,7 +21,7 @@ const fetchSpecificOrderData = async (id: number): Promise<Order> => {
 
 const OrderDetails= () => {
  
-    const id=1;
+    const id= Number(useParams<{id: string}>().id);
     const [order, setOrder] = useState<Order | null>(null)
 
     useEffect(() => {
