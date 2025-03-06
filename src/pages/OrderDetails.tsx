@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Descriptions, Typography } from 'antd';
 import { Order } from '../types';
-
-
-
-// interface Order {
-//     customerName: string;
-//     status: string;
-//     address: string;
-//     estimatedDelivery: string;
-//     items: string[];
-// }
+import { useParams } from 'react-router-dom';
 
 const fetchSpecificOrderData = async (id: number): Promise<Order> => {
     try {
@@ -28,14 +19,14 @@ const fetchSpecificOrderData = async (id: number): Promise<Order> => {
     }
 };
 
-const IndividualOrder= () => {
+const OrderDetails= () => {
  
-    const id=1;
+    const id= Number(useParams<{id: string}>().id);
     const [order, setOrder] = useState<Order | null>(null)
 
     useEffect(() => {
     fetchSpecificOrderData(id).then((data) =>{
-        console.log({individualOrder: data})
+       
         return setOrder(data);
     } );
         
@@ -60,4 +51,4 @@ const IndividualOrder= () => {
      );
 }
  
-export default IndividualOrder;
+export default OrderDetails;

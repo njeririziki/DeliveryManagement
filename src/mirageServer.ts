@@ -136,7 +136,11 @@ export function makeServer({ environment = "development" } = {}) {
         return schema.create("order", attrs);
       });
 
-      this.passthrough('https://jsonplaceholder.typicode.com/**');
+      this.passthrough('https://jsonplaceholder.typicode.com/**',
+        'https://api.mapbox.com/**',
+        'https://api.mapbox.com/styles/v1/**',
+        'https://events.mapbox.com/**',
+      );
     },
   });
 

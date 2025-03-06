@@ -2,32 +2,13 @@ import { useEffect, useState } from "react";
 import { User } from "../types";
 import { Typography, Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
-import { useSelectedUserDetails } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
-
+import { fetchUserData } from "../services/UsersService";
 interface DataType {
   user: User;
 }
 
-const fetchUserData = async (): Promise<User[]> => {
-  try {
-    const response = await fetch("https://jsonplaceholder.typicode.com/users", {
-      headers: {
-        "x-mirage-bypass": "true",
-      },
-    });
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-    console.log({ data });
 
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch data:", error);
-    return [];
-  }
-};
 
 const columns: TableColumnsType<DataType> = [
   {
@@ -67,7 +48,7 @@ const onChange: TableProps<DataType>["onChange"] = (
 };
 
 const UsersTable = () => {
-  const { setSelectedUser } = useSelectedUserDetails();
+ 
   const [userData, setUserData] = useState<DataType[]>([]);
   const navigate = useNavigate();
 
@@ -96,8 +77,6 @@ const UsersTable = () => {
   }, []);
 
   const handleUserSelection = (record: DataType) => {
-   
-    setSelectedUser(record.user);
     navigate(`/users/${record.user.id}`);
   };
 
