@@ -135,6 +135,7 @@ export function makeServer({ environment = "development" } = {}) {
         const order = schema.find("order", id);
         return order ? order.attrs : new Response(404, {}, { error: "Order not found" });
       });
+      
       this.post("/orders", (schema, request) => {
         const attrs = JSON.parse(request.requestBody);
         return schema.create("order", attrs);
