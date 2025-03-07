@@ -104,7 +104,11 @@ const orders: Order[] = users.map((user, index) => ({
   items: ["Laptop", "Phone", "Tablet", "Headphones", "Monitor"].sort(
     () => Math.random() - 0.5
   ),
-  location: { lat: Number(user.address.geo.lat), lng: Number(user.address.geo.lng) },
+ 
+  warehouseLocation:{lat:-1.2664, lng:36.8030},
+  orderLocation: { lat: Number(user.address.geo.lat), lng: Number(user.address.geo.lng) },
+  destinationLocation: { lat: Number(user.address.geo.lat), lng: Number(user.address.geo.lng) },
+
 }));
 
 export function makeServer({ environment = "development" } = {}) {

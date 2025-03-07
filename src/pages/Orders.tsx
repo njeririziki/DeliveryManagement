@@ -1,34 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, List, Typography } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import { Order } from '../types';
+import { fetchOrderData } from '../services/OrderService';
 
 
-
-const fetchOrderData = async (): Promise<Order[]> => {
-    try {
-      const response = await fetch('api/orders');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-    
-      return data?.orders;
-    } catch (error) {
-      console.error('Failed to fetch data:', error);
-        return [];
-      }
-  };
 
 const Orders = () => {
     const [orders, setOrders] = useState<Order[]>([]);
+    const navigate = useNavigate();
+
 
     useEffect(() => {
-      fetchOrderData().then((data) =>{
-         
-       return setOrders(data)
-      } );
-    }, []);
+      fetchOrderData().then((data: Order[]) =>{       
+       return setOrders(data);
+      });
+     }, []);
 
+
+    const handleNavigation = (orderId: string)  => {
+      // Implement navigation logic here, e.g., using react-router
+      console.log(`Navigating to order details for order ID: ${orderId}`);
+      navigate(`/orders/${orderId}`)
+    };
 
     return ( 
         <div >
@@ -38,11 +32,14 @@ const Orders = () => {
             itemLayout="horizontal"
             dataSource={orders}
             renderItem={(item, index) => (
-            <List.Item>
+            <List.Item
+            actions={[<a key="list-loadmore-more" onClick={()=>handleNavigation(item.id)}>more</a>]}
+            >
                 <List.Item.Meta
                  avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`} />}
                 title={item.customerName}
                 description={item.items.join(', ')}
+              
                 />
             </List.Item>
             )}

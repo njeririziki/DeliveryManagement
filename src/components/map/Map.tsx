@@ -6,8 +6,9 @@ import { MapDefaultCenter, MapDefaultZoom } from "../../utils/constants";
 import Marker from "./Marker";
 import { User } from "../../types";
 
-export const accessToken = (mapboxgl.accessToken =
-  "pk.eyJ1IjoibmplcmlrYXJpdWtpIiwiYSI6ImNtN3E5Ymo1aDBsMHEyanNkbHdhd2U2NnYifQ.iQcPDg1o_dbOD5PKkcpiPw");
+export const accessToken = (mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
+  // "pk.eyJ1IjoibmplcmlrYXJpdWtpIiwiYSI6ImNtN3E5Ymo1aDBsMHEyanNkbHdhd2U2NnYifQ.iQcPDg1o_dbOD5PKkcpiPw"
+);
 
 interface MapProps {
   data: User[];

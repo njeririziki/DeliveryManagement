@@ -8,7 +8,15 @@ export interface Order {
     address: string;
     estimatedDelivery: string;
     items: string[];
-    location: {
+    warehouseLocation: {
+      lat: number;
+      lng: number;
+    };
+    orderLocation: {
+      lat: number;
+      lng: number;
+    };
+    destinationLocation: {
       lat: number;
       lng: number;
     };
