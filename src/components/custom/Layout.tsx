@@ -4,6 +4,7 @@ import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import PlaneLogo from "../../assets/planeflat.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
+import { convertStringToTitleCase } from "../../utils/helpers";
 
 const { Content, Sider } = Layout;
 
@@ -52,12 +53,7 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => {
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
+        
         style={{ background: colorBgContainer }}
       >
       
@@ -78,7 +74,7 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => {
    
         <Content style={{ margin: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>{crumbs[0].toLocaleUpperCase()}</Breadcrumb.Item>
+            <Breadcrumb.Item>{convertStringToTitleCase(crumbs[0])}</Breadcrumb.Item>
             <Breadcrumb.Item>{crumbs[1]}</Breadcrumb.Item>
           </Breadcrumb>
           <div

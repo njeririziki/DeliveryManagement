@@ -12,7 +12,7 @@
  * convertStrigToTitleCase("hello world"); // returns "Hello World"
  * ```
  */
-export function convertStrigToTitleCase(s: string): string {
+export function convertStringToTitleCase(s: string): string {
     return s.toLowerCase()
             .split(' ')
             .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
