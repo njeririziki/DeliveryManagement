@@ -12,7 +12,9 @@ const Orders = () => {
 
 
     useEffect(() => {
-      fetchOrderData().then((data: Order[]) =>{       
+      fetchOrderData().then((data: Order[]) =>{  
+        console.log({data});
+        
        return setOrders(data);
       });
      }, []);

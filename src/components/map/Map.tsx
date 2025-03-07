@@ -5,16 +5,17 @@ import { useRef, useEffect, useState } from "react";
 import { MapDefaultCenter, MapDefaultZoom } from "../../utils/constants";
 import Marker from "./Marker";
 import { User } from "../../types";
+//import Warehouse from "../../assets/package.svg";
 
-export const accessToken = (mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
   // "pk.eyJ1IjoibmplcmlrYXJpdWtpIiwiYSI6ImNtN3E5Ymo1aDBsMHEyanNkbHdhd2U2NnYifQ.iQcPDg1o_dbOD5PKkcpiPw"
-);
+
 
 interface MapProps {
   data: User[];
 }
 
-const Map: React.FC<MapProps> = ({ data,  }) => {
+const Map: React.FC<MapProps> = ({ data }) => {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const mapContainer = useRef<HTMLDivElement>(null);
 
@@ -34,7 +35,12 @@ const Map: React.FC<MapProps> = ({ data,  }) => {
         setMapLoaded(true);
       });
 
-      new mapboxgl.Marker({ color: "black", rotation: 45 })
+      // const el = document.createElement("div");
+      // el.className = "marker";
+      // el.style.backgroundImage = `url(${Warehouse})`;
+      // el.style.width = "50px";
+      // el.style.height = "50px";
+      new mapboxgl.Marker({color:"black"})
         .setLngLat(MapDefaultCenter)
         .addTo(mapInstance);
 

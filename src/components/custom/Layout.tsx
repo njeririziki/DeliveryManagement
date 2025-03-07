@@ -73,10 +73,13 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => {
       <Layout>
    
         <Content style={{ margin: "0 16px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>{convertStringToTitleCase(crumbs[0])}</Breadcrumb.Item>
-            <Breadcrumb.Item>{crumbs[1]}</Breadcrumb.Item>
+          {crumbs?.length !==0 && <Breadcrumb style={{ margin: "16px 0" }}>
+            {crumbs.map((crumb, index) => (
+              <Breadcrumb.Item key={index}>{convertStringToTitleCase(crumb)}</Breadcrumb.Item>
+            ))}
+          
           </Breadcrumb>
+    }
           <div
             style={{
               padding: 24,

@@ -1,9 +1,9 @@
 import { useEffect,useRef } from "react";
 import mapboxgl from 'mapbox-gl'
-import User1 from '../../assets/user1.jpg'
+import Package from '../../assets/package.jpg'
 import { Map } from 'mapbox-gl';
 import { User } from "../../types";
-import { Avatar, Typography } from "antd";
+import { Avatar,Typography } from "antd";
 
 
 interface MarkerProps {
@@ -12,7 +12,7 @@ interface MarkerProps {
   itemname: string;
 }
 
-const Marker = ({ map, feature, itemname }: MarkerProps) => {
+const Marker = ({ map, feature }: MarkerProps) => {
 
     const markerRef = useRef<mapboxgl.Marker | null>(null);
     const markerEl = useRef<HTMLDivElement>(null);
@@ -36,9 +36,12 @@ const Marker = ({ map, feature, itemname }: MarkerProps) => {
     return (
         <div>
             <div ref={markerEl} style={{}} >
-                <Avatar  src={User1} alt='avatar'/>
-             <Typography.Text>{feature.name}</Typography.Text>
-             <Typography.Text>{itemname}</Typography.Text>
+                <Avatar  
+                src={feature.name? `https://api.dicebear.com/7.x/miniavs/svg?seed=${feature.id}` : Package} 
+                
+                 alt='avatar'/>
+                <Typography.Text>{feature.name}</Typography.Text>
+           
             </div>
         </div>
       );

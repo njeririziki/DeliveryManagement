@@ -9,7 +9,8 @@ export const fetchOrderData = async (): Promise<Order[]> => {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-    
+       console.log({data});
+       
       return data?.orders;
     } catch (error) {
       console.error('Failed to fetch data:', error);

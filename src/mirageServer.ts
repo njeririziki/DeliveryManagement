@@ -1,6 +1,7 @@
 import { createServer, Model, Response } from "miragejs";
 import { Order } from "./types";
-
+import { generateOrderLocation } from "./utils/helpers";
+import { MapDefaultCenter } from "./utils/constants";
 
 const users = [
   {
@@ -105,8 +106,11 @@ const orders: Order[] = users.map((user, index) => ({
     () => Math.random() - 0.5
   ),
  
-  warehouseLocation:{lat:-1.2664, lng:36.8030},
-  orderLocation: { lat: Number(user.address.geo.lat), lng: Number(user.address.geo.lng) },
+  warehouseLocation:{lat:MapDefaultCenter[1], lng:MapDefaultCenter[0]},
+  orderLocation: generateOrderLocation(
+    {lat:-1.2664, lng:36.8030},
+    { lat: Number(user.address.geo.lat), lng: Number(user.address.geo.lng) }
+, Math.random() * 0.8 + 0.1),
   destinationLocation: { lat: Number(user.address.geo.lat), lng: Number(user.address.geo.lng) },
 
 }));
