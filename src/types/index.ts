@@ -47,7 +47,5 @@ export interface Order {
     };
   }
 
-  export interface UserContextType {
-    selectedUser: User | null;
-    setSelectedUser: (user: User | null) => void;
-  }
+ 
+  

@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useState, ReactNode, FC } from "react";
+import React, { createContext, useContext, useState, ReactNode, FC, useEffect } from "react";
 
 // Define the shape of the error context
 interface ErrorContextType {
-  error: string | null;
+  error: string| null;
   setError: (error: string | null) => void;
   clearError: () => void;
 }
@@ -20,6 +20,11 @@ export const ErrorProvider: FC<ErrorProviderProps> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
 
   const clearError = () => setError(null);
+
+  useEffect(() => {
+  console.log("Error:", error);
+  
+  }, [error]);
 
   return (
     <ErrorContext.Provider value={{ error, setError, clearError }}>

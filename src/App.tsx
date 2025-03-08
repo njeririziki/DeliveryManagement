@@ -1,12 +1,12 @@
-import { UserProvider } from "./context/UserContext";
+import { ErrorProvider  } from "./context/ErrorHandlingContext";
 import Routing from "./pages/Routing"
 
 
 function App() {
   return (
-    <UserProvider>
+    <ErrorProvider>
     <Routing />
-    </UserProvider>
+    </ErrorProvider>
   );
 }
 

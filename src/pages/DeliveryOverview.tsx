@@ -1,12 +1,12 @@
 import Map from "../components/map/Map";
 //import MapboxExample from "../components/map/WholePageMaps";
-import { fetchUserData } from "../services/UsersService";
+import {fetchUserData} from "../services/UsersService";
 import { useEffect, useState } from "react";
 import { User } from "../types";
 
 const DeliveryOverview = () => {
     const [userData, setUserData] = useState<User[]>([]);
-   
+    
   
     useEffect(() => {
       fetchUserData()
