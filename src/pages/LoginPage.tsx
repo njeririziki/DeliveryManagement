@@ -1,4 +1,4 @@
-import React, { useEfect } from 'react';
+import React from 'react';
 import { Form, Input, Typography } from 'antd';
 import Plane from '../assets/planeflat.jpg';
 import StandardButton from '../components/custom/StandardButton';
@@ -25,6 +25,7 @@ const LoginPage: React.FC = () => {
       name="login"
       initialValues={{ remember: true }}
       size='large'
+      style={{padding: '1.5rem'}}
       className='w-1/3 bg-white p-16 rounded-lg drop-shadow-md'
       onFinish={onFinish}
     >

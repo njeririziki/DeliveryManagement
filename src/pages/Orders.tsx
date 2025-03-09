@@ -1,53 +1,75 @@
-import React, { useEffect, useState } from 'react';
-import { Avatar, List, Typography } from 'antd';
+//import React, {  useEffect, useState } from 'react';
+import { Avatar, List, Skeleton, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { Order } from '../types';
+// import { Order } from '../types';
 import { fetchOrderData } from '../services/OrderService';
-
+import { useQuery } from '@tanstack/react-query';
+import Package from '../assets/package.jpg';
+import StaticCard from '../components/custom/StatisticCard';
+import { statisticData } from '../data/statisticalData';
+import { useError } from '../context/ErrorHandlingContext';
 
 
 const Orders = () => {
-    const [orders, setOrders] = useState<Order[]>([]);
+    // const [orders, setOrders] = useState<Order[]>([]);
     const navigate = useNavigate();
-
-
-    useEffect(() => {
-      fetchOrderData().then((data: Order[]) =>{  
-        console.log({data});
-        
-       return setOrders(data);
-      });
-     }, []);
-
-    
-
+    const {setError} = useError();
+    const {isLoading, error, data} = useQuery({queryKey:['orders'], queryFn: fetchOrderData});
 
     const handleNavigation = (orderId: string)  => {
-      // Implement navigation logic here, e.g., using react-router
-      console.log(`Navigating to order details for order ID: ${orderId}`);
-      navigate(`/orders/${orderId}`)
+       navigate(`/orders/${orderId}`)
     };
 
+    if(isLoading) return <Skeleton active />
+    if(error) return setError(error.message);
+    if(!data) return <Typography.Text> No orders available</Typography.Text>
     return ( 
-        <div >
-            <Typography.Title level={2}>Orders</Typography.Title>
-          
+        <div className='w-full' >
+          <div className='w-full bg-white mb-4 p-4 flex flex-row justify-stretch gap-4 rounded-lg '>
+            {statisticData.map((data, index) => 
+              <StaticCard key={index} title={data.title} card={data.card} />
+            )}
+            
+          </div>
+          <div className='w-full  p-4 flex flex-row justify-stretch gap-4 rounded-lg '>
+           <div className='bg-white w-1/2 border border-gray-200 rounded-lg p-4'>
            <List
+            header={<p className='font-semibold'>Shipped Orders</p>}
             itemLayout="horizontal"
-            dataSource={orders}
+            dataSource={data}
             renderItem={(item, index) => (
             <List.Item
             actions={[<a key="list-loadmore-more" onClick={()=>handleNavigation(item.id)}>more</a>]}
             >
                 <List.Item.Meta
-                 avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`} />}
-                title={item.customerName}
-                description={item.items.join(', ')}
-              
+                 avatar={<Avatar src={Package} />}
+                title={`Shipment ID: GRSWFY0${item.id}  `}
+                description={`${item.customerName}. Delivery by ${item.estimatedDelivery}`}              
                 />
             </List.Item>
             )}
         />  
+        </div>
+        <div className='bg-white w-1/2 border border-gray-200 rounded-lg p-4'>
+              <List
+              header={<p className='font-semibold'>Pending Orders</p>}
+            itemLayout="horizontal"
+            dataSource={data}
+            renderItem={(item, index) => (
+            <List.Item
+            // actions={[<a key="list-loadmore-more" onClick={()=>handleNavigation(item.id)}>more</a>]}
+            >
+                <List.Item.Meta
+                 avatar={<Avatar src={Package} />}
+                title={` ${item.customerName}`}
+                description={`Items: ${item.items.join(', ')}`}
+              
+                />
+            </List.Item>
+            )}
+        /> 
+        </div>
+     </div>
         </div>
      );
 }

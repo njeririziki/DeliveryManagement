@@ -1,24 +1,24 @@
 import { useEffect,useRef } from "react";
 import mapboxgl from 'mapbox-gl'
-import Package from '../../assets/package.jpg'
 import { Map } from 'mapbox-gl';
-import { User } from "../../types";
-import { Avatar,Typography } from "antd";
-
+import { Avatar } from 'antd';
+import User1 from '../../assets/user1.jpg';
 
 interface MarkerProps {
   map: Map;
-  feature: User;
-  itemname: string;
+  children: React.ReactNode
+ // type: string;
+  coordinates: [number, number];
+ 
 }
 
-const Marker = ({ map, feature }: MarkerProps) => {
+const Marker = ({ map, coordinates,children }: MarkerProps) => {
 
     const markerRef = useRef<mapboxgl.Marker | null>(null);
     const markerEl = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const coord: [number, number] = [+feature.address.geo.lng, +feature.address.geo.lat];
+        const coord: [number, number] = coordinates;
         if (!markerEl.current) return;
 
         const marker = new mapboxgl.Marker({
@@ -30,18 +30,14 @@ const Marker = ({ map, feature }: MarkerProps) => {
       marker.addTo(map);
 
       markerRef.current = marker
-    }, [feature,map]);
+    }, [coordinates,map]);
 
 
     return (
         <div>
             <div ref={markerEl} style={{}} >
-                <Avatar  
-                src={feature.name? `https://api.dicebear.com/7.x/miniavs/svg?seed=${feature.id}` : Package} 
-                
-                 alt='avatar'/>
-                <Typography.Text>{feature.name}</Typography.Text>
-           
+            {children}
+               
             </div>
         </div>
       );

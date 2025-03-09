@@ -1,12 +1,13 @@
-import React from "react";
-import { TeamOutlined, UserOutlined, GlobalOutlined } from "@ant-design/icons";
+import React, {useState} from "react";
+import { TeamOutlined, UserOutlined, GlobalOutlined, FileTextOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import PlaneLogo from "../assets/planeflat.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { convertStringToTitleCase } from "../utils/helpers";
 import { Outlet } from "react-router-dom";
-
+import Popup from "./custom/ToastPopup";
+import { Typography } from "antd";
 
 const { Content, Sider } = Layout;
 
@@ -39,6 +40,8 @@ const items: MenuItem[] = [
 const BaseLayout= () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [openPopup, setOpenPopup] = useState(false)
+
 
   //check for authentication and redirect to login page if not authenticated
 
@@ -95,6 +98,9 @@ const BaseLayout= () => {
             <Outlet />
           </div>
         </Content>
+        <Popup isOpen={openPopup} onClose={()=>setOpenPopup(false)}>
+    <Typography.Title level={5}  className="text-red-600">Error</Typography.Title>
+    </Popup>
       </Layout>
     </Layout>
   );

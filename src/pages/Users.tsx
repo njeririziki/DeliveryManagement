@@ -3,12 +3,31 @@ import { User } from "../types";
 import { Typography, Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { useNavigate } from "react-router-dom";
-import { fetchUserData } from "../services/UsersService";
+//import { fetchUserData } from "../services/UsersService";
+import { useError } from "../context/ErrorHandlingContext";
 interface DataType {
   user: User;
 }
 
+const  fetchUserData = async (): Promise<User[]> => {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/users", {
+      headers: {
+        "x-mirage-bypass": "true",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    console.log({ data });
 
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch data:", error);
+    return [];
+  }
+};
 
 const columns: TableColumnsType<DataType> = [
   {
@@ -48,14 +67,17 @@ const onChange: TableProps<DataType>["onChange"] = (
 };
 
 const UsersTable = () => {
- 
   const [userData, setUserData] = useState<DataType[]>([]);
   const navigate = useNavigate();
+  const { setError } = useError();
+
+
 
   useEffect(() => {
     fetchUserData()
-      .then((data) => {
+      .then((data: User[]) => {
         console.log({ fetchUserData: data });
+        
         const transformedData = data.map((user, index) => ({
           key: index,
           user: user,
@@ -73,7 +95,10 @@ const UsersTable = () => {
         }));
         setUserData(transformedData);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        return setError(error);
+      });
   }, []);
 
   const handleUserSelection = (record: DataType) => {
@@ -91,7 +116,7 @@ const UsersTable = () => {
         showSorterTooltip={{ target: "sorter-icon" }}
         onRow={(record) => {
           return {
-            onClick: () => handleUserSelection(record), // click row
+            onClick: () => handleUserSelection(record), 
           };
         }}
       />

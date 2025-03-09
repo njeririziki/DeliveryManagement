@@ -1,11 +1,13 @@
 import mapboxgl from "mapbox-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, use } from "react";
 import { MapDefaultCenter, MapDefaultZoom } from "../../utils/constants";
 import Marker from "./Marker";
 import { User } from "../../types";
-//import Warehouse from "../../assets/package.svg";
+import { Avatar } from "antd";
+//import Package from '../../assets/package.jpg'
+import Warehouse from "../../assets/warehouse.jpg";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
   // "pk.eyJ1IjoibmplcmlrYXJpdWtpIiwiYSI6ImNtN3E5Ymo1aDBsMHEyanNkbHdhd2U2NnYifQ.iQcPDg1o_dbOD5PKkcpiPw"
@@ -35,14 +37,6 @@ const Map: React.FC<MapProps> = ({ data }) => {
         setMapLoaded(true);
       });
 
-      // const el = document.createElement("div");
-      // el.className = "marker";
-      // el.style.backgroundImage = `url(${Warehouse})`;
-      // el.style.width = "50px";
-      // el.style.height = "50px";
-      new mapboxgl.Marker({color:"black"})
-        .setLngLat(MapDefaultCenter)
-        .addTo(mapInstance);
 
       return () => {
         mapInstance.remove();
@@ -50,14 +44,35 @@ const Map: React.FC<MapProps> = ({ data }) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.flyTo({ center: [+data[0].address.geo.lng, +data[0].address.geo.lat], zoom:6, essential: true });
+    }
+  }, [data]);
+
   return (
     <div ref={mapContainer} style={{ width: "50vw", height: "50vh" }}>
-      {mapLoaded && data &&
-        mapRef.current &&
-        data.map((user, index) => (
-          mapRef.current && <Marker key={index} map={mapRef.current} feature={user} itemname="item" />
-        ))
-      }
+      {mapLoaded && mapRef.current && (
+      <>
+        <Marker map={mapRef.current} coordinates={MapDefaultCenter}>
+        <Avatar src={Warehouse} alt="avatar" />
+        </Marker>
+        {data.map((user, index) => (
+          mapRef.current && (
+            <Marker
+              key={index}
+              map={mapRef.current}
+              coordinates={[+user.address.geo.lng, +user.address.geo.lat]}
+            >
+              <Avatar
+                src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
+                alt="avatar"
+              />
+            </Marker>
+          )
+        ))}
+      </>
+      )}
     </div>
   );
 };
