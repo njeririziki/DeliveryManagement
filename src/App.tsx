@@ -1,12 +1,19 @@
-import { UserProvider } from "./context/UserContext";
+import { ErrorProvider  } from "./context/ErrorHandlingContext";
 import Routing from "./pages/Routing"
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 
+const queryClient = new QueryClient()
 
 function App() {
   return (
-    <UserProvider>
+    <QueryClientProvider client={queryClient}>
+    <ErrorProvider>
     <Routing />
-    </UserProvider>
+    </ErrorProvider>
+    </QueryClientProvider>
   );
 }
 

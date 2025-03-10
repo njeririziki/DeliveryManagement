@@ -2,13 +2,22 @@
 
 export interface Order {
     id: string;
+    shipmentId: string;
     customerId: number;
     customerName: string;
     status: string;
     address: string;
     estimatedDelivery: string;
     items: string[];
-    location: {
+    warehouseLocation: {
+      lat: number;
+      lng: number;
+    };
+    orderLocation: {
+      lat: number;
+      lng: number;
+    };
+    destinationLocation: {
       lat: number;
       lng: number;
     };
@@ -39,7 +48,20 @@ export interface Order {
     };
   }
 
-  export interface UserContextType {
-    selectedUser: User | null;
-    setSelectedUser: (user: User | null) => void;
+  export interface Feature {
+    featureName: string;
+    avatar: string;
+    coordinates: [number, number];
+    address: string;
   }
+
+  export interface OrderFeature {
+    featureName: string;
+    avatar: string;
+    warehouseCoordinates: [number, number];
+    orderCoordinates?: [number, number];
+    destinationCoordinates: [number, number];
+    address: string;
+  }
+ 
+  

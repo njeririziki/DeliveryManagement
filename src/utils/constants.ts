@@ -3,4 +3,4 @@
         36.8030,
         -1.2664
     ]
-    export const MapDefaultZoom  = 0.61
+    export const MapDefaultZoom  = 2

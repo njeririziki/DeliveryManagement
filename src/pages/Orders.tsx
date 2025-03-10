@@ -1,52 +1,82 @@
-import React, { useEffect, useState } from 'react';
-import { Avatar, List, Typography } from 'antd';
-import { Order } from '../types';
+//import React, {  useEffect, useState } from 'react';
+import { Avatar, List, Skeleton, Typography } from 'antd';
+import { useNavigate } from 'react-router-dom';
+// import { Order } from '../types';
+import { fetchOrderData } from '../services/OrderService';
+import { useQuery } from '@tanstack/react-query';
+import Package from '../assets/package.jpg';
+import StaticCard from '../components/custom/StatisticCard';
+import { statisticData } from '../data/statisticalData';
+import { useError } from '../context/ErrorHandlingContext';
 
-
-
-const fetchOrderData = async (): Promise<Order[]> => {
-    try {
-      const response = await fetch('api/orders');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-    
-      return data?.orders;
-    } catch (error) {
-      console.error('Failed to fetch data:', error);
-        return [];
-      }
-  };
 
 const Orders = () => {
-    const [orders, setOrders] = useState<Order[]>([]);
+    // const [orders, setOrders] = useState<Order[]>([]);
+    const navigate = useNavigate();
+    const {setError} = useError();
+    const {isLoading, error, data} = useQuery({queryKey:['orders'], queryFn: fetchOrderData});
 
-    useEffect(() => {
-      fetchOrderData().then((data) =>{
-         
-       return setOrders(data)
-      } );
-    }, []);
-
-
+    const handleNavigation = (orderId: string)  => {
+    
+      sessionStorage.setItem('orderId', orderId);
+       navigate(`/orderdetails`)
+    
+    };
+if (error) {
+    setError(error.message);
+    return <Typography.Text>Error loading order details</Typography.Text>;
+  }
+    if(isLoading) return <Skeleton active />
+    if(!data) return <Typography.Text> No orders available</Typography.Text>
     return ( 
-        <div >
-            <Typography.Title level={2}>Orders</Typography.Title>
-          
+        <div className='w-full' >
+          <div className='w-full bg-white mb-4 p-4 flex flex-row justify-stretch gap-4 rounded-lg '>
+            {statisticData.map((data, index) => 
+              <StaticCard key={index} title={data.title} card={data.card} />
+            )}
+            
+          </div>
+          <div className='w-full  p-4 flex flex-row justify-stretch gap-4 rounded-lg '>
+           <div className='bg-white w-1/2 border border-gray-200 rounded-lg p-4'>
            <List
+            header={<p className='font-semibold'>Shipped Orders</p>}
             itemLayout="horizontal"
-            dataSource={orders}
-            renderItem={(item, index) => (
-            <List.Item>
+            dataSource={data}
+            renderItem={(item,index) => (
+            <List.Item
+            key={index}
+            actions={[<a key="list-loadmore-more" onClick={()=>handleNavigation(item.id)}>more</a>]}
+            >
                 <List.Item.Meta
-                 avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`} />}
-                title={item.customerName}
-                description={item.items.join(', ')}
+                 avatar={<Avatar src={Package} />}
+                title={`Shipment ID: ${item.shipmentId}  `}
+                description={`${item.customerName}. Delivery by ${item.estimatedDelivery}`}              
                 />
             </List.Item>
             )}
         />  
+        </div>
+        <div className='bg-white w-1/2 border border-gray-200 rounded-lg p-4'>
+              <List
+              header={<p className='font-semibold'>Pending Orders</p>}
+            itemLayout="horizontal"
+            dataSource={data}
+            renderItem={(item, index) => (
+            <List.Item
+            key={index}
+            // actions={[<a key="list-loadmore-more" onClick={()=>handleNavigation(item.id)}>more</a>]}
+            >
+                <List.Item.Meta
+                 avatar={<Avatar src={Package} />}
+                title={` ${item.customerName}`}
+                description={`Items: ${item.items.join(', ')}`}
+              
+                />
+            </List.Item>
+            )}
+        /> 
+        </div>
+     </div>
         </div>
      );
 }
