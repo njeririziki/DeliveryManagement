@@ -2,27 +2,45 @@ import { Order } from '../types';
 import axios from 'axios';
 
 
-export const fetchOrderData = async (): Promise<Order[]> => {
-  try {
-    const response = await axios.get('api/orders');
-    const data = response.data;
-    console.log({ data });
-
-    return data?.orders;
-  } catch (error) {
-    console.error('Failed to fetch data:', error);
-    return [];
-  }
+export const fetchOrderData = (): Promise<Order[]> => {
+  return new Promise((resolve, reject) => {
+    try {
+      axios.get('api/orders')
+      .then(response => {
+        const data = response.data;
+    
+        resolve(data?.orders);
+      })
+      .catch(error => {
+        console.error('Failed to fetch data:', error);
+        reject(error);
+      });
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+      reject(error);
+      
+    }
+  
+  });
 };
 
-export const fetchSpecificOrderData = async ({ id }: { id: number }): Promise<Order> => {
-  try {
-    const response = await axios.get(`api/orders/${id}`);
-    const data = response.data;
-
-    return data;
-  } catch (error) {
-    console.error('Failed to fetch data:', error);
-    return {} as Order;
-  }
+export const fetchSpecificOrderData = ({ id }: { id: number }): Promise<Order> => {
+  return new Promise((resolve, reject) => {
+    try {
+      axios.get(`api/orders/${id}`)
+      .then(response => {
+        const data = response.data;
+        resolve(data);
+      })
+      .catch(error => {
+        console.error('Failed to fetch data:', error);
+        reject(error);
+      });
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+      return reject(error);
+      
+    }
+    
+  });
 };

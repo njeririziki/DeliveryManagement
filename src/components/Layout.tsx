@@ -117,7 +117,9 @@ const BaseLayout = () => {
             <Outlet />
           </div>
         </Content>
-        <Popup isOpen={openPopup} onClose={() => setOpenPopup(false)}>
+        <Popup isOpen={openPopup} onClose={() => {
+          clearError();
+          setOpenPopup(false)}}>
           <Typography.Title level={5} type="danger">
             Error
           </Typography.Title>
