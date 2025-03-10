@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { TeamOutlined, UserOutlined, GlobalOutlined, LogoutOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu } from "antd";
@@ -42,6 +42,7 @@ const BaseLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [openPopup, setOpenPopup] = useState(false);
+  const [currentMenuItem, setCurrentMenuItem] = useState('orders');
   const { error, clearError } = useError();
  const isAuthenticated = sessionStorage.getItem("isAuthenticated");
   
@@ -52,8 +53,13 @@ const BaseLayout = () => {
     }
   }, []);
 
-  const crumbs = location.pathname.split("/").filter((crumb) => crumb);
 
+
+  useEffect(() => {
+
+    const path = location.pathname.split("/").filter((crumb) => crumb);
+    setCurrentMenuItem(path[0]);
+  }, [location]);
    
 
   useEffect(() => {
@@ -87,8 +93,8 @@ const BaseLayout = () => {
           style={{ width: "7rem", marginLeft: "1rem" }}
         />
         <Menu
-          theme="light"
-          defaultSelectedKeys={["orders"]}
+          theme="light"        
+          selectedKeys={[currentMenuItem]}
           mode="inline"
           style={{}}
           onClick={handleNavigation}
@@ -104,7 +110,7 @@ const BaseLayout = () => {
       </Sider>
       <Layout className="overflow-hidden">
         <Content style={{ margin: "0 16px" }}>
-          {crumbs?.length !== 0 && (
+          {/* {crumbs?.length !== 0 && (
             <Breadcrumb style={{ margin: "16px 0" }}>
               {crumbs.map((crumb, index) => (
                 <Breadcrumb.Item key={index}>
@@ -112,7 +118,7 @@ const BaseLayout = () => {
                 </Breadcrumb.Item>
               ))}
             </Breadcrumb>
-          )}
+          )} */}
           <div className="p-4 pb-20 bg-white rounded-lg h-full overflow-y-auto">
             <Outlet />
           </div>
