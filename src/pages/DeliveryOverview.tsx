@@ -5,11 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Descriptions, Skeleton, Typography} from "antd";
 import { useError } from "../context/ErrorHandlingContext";
 import Package from "../assets/package.jpg";
+import User2 from "../assets/user2.jpg";
 import { useEffect, useState } from "react";
 import { Feature } from "../types";
 
 const DeliveryOverview = () => {
   const { setError } = useError();
+  const [typeOfLayer, setTypeOfLayer] = useState("multipleLines");
   const [ordersMapData, setOrdersMapData] = useState<Feature[] | null>(null)
   const { isLoading, error, data } = useQuery({
     queryKey: ["orders"],
@@ -21,8 +23,10 @@ const DeliveryOverview = () => {
       const mapData = data.map((order) => ({
         featureName: order.shipmentId,
         address: order.address,
-        coordinates: [+order.destinationLocation.lng as number, +order.destinationLocation.lat as number] as [number, number],
-        avatar: Package,
+        ordercoordinates: [Number(order.orderLocation.lng), Number(order.orderLocation.lat)] as [number, number],
+        coordinates: [Number(order.destinationLocation.lng), Number(order.destinationLocation.lat)] as [number, number],
+        avatar: User2,
+        type: "singleLine",
       }));
 
       setOrdersMapData(mapData);
@@ -30,6 +34,15 @@ const DeliveryOverview = () => {
     }
   }, [data]);
   
+ 
+
+  const showSingleLine = (id: string) => {
+    setTypeOfLayer("singleLine");
+    setOrdersMapData((prevData) => {
+      const order = prevData?.find((order) => order.featureName === id);
+      return order ? [order] : prevData;
+    });
+  }
 
   if (error) {
       setError(error.message);
@@ -42,11 +55,12 @@ const DeliveryOverview = () => {
       <div className="w-1/3 flex flex-col gap-4">
         {data &&
           data.map((order, index) => (
-            <div key={index}>
+            <div key={index} onClick={() => showSingleLine(order.shipmentId)}>
               <CustomCollapse
                 defaultOpen={index === 0}
                 topPart={
-                  <div className="flex flex-row  items-center gap-4">
+                  <div className="flex flex-row  items-center gap-4"
+                   >
                     <img
                       src={Package}
                       className="bg-gray-100 rounded-full w-16 h-16"
@@ -82,7 +96,7 @@ const DeliveryOverview = () => {
             </div>
           ))}
       </div>
-      {ordersMapData && <Map data={ordersMapData}/>}
+      {ordersMapData && <Map type={typeOfLayer} data={ordersMapData}/>}
     </div>
   );
 };

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
   TeamOutlined,
-  UserOutlined,
   GlobalOutlined,
   LogoutOutlined,
+  FileTextOutlined
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Layout, Menu } from "antd";
@@ -33,7 +33,7 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Orders", "orders", <UserOutlined />),
+  getItem("Orders", "orders", <FileTextOutlined />),
   getItem("Users", "users", <TeamOutlined />),
   getItem("Shipping", "delivery", <GlobalOutlined />),
 ];

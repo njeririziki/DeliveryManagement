@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
-
 import { Descriptions, Skeleton, Typography } from "antd";
-import { Order } from "../types";
-// import { useParams } from "react-router-dom";
-import OrderMap from "../components/map/NavigationMap";
+import { Order , Feature } from "../types";
+import Map from "../components/map/Map";
 import { useQuery } from "@tanstack/react-query";
 import { fetchSpecificOrderData } from "../services/OrderService";
 import { useError } from "../context/ErrorHandlingContext";
 import CustomCollapse from "../components/custom/CustomCollapse";
 import Package from "../assets/package.svg";
+import User4 from "../assets/user4.jpg";
 
 const OrderDetails: React.FC = () => {
   const id = Number(sessionStorage.getItem("orderId"));
 
   const [order, setOrder] = useState<Order | null>(null);
+  const [ordersMapData, setOrdersMapData] = useState<Feature[] | null>(null)
+    
   const { setError } = useError();
 
   const { isLoading, error, data } = useQuery({
@@ -24,6 +25,15 @@ const OrderDetails: React.FC = () => {
   useEffect(() => {
     if (data) {
       setOrder(data);
+      
+      setOrdersMapData([{
+        featureName: data.shipmentId,
+        address: data.address,
+        ordercoordinates: [Number(data.orderLocation.lng), Number(data.orderLocation.lat)] as [number, number],
+        coordinates: [Number(data.destinationLocation.lng), Number(data.destinationLocation.lat)] as [number, number],
+        avatar: User4,
+        type: "singleLine",
+      }]);
     }
   }, [data]);
 
@@ -72,7 +82,8 @@ const OrderDetails: React.FC = () => {
         </div>
       </CustomCollapse>
     </div>
-    {order && <OrderMap order={order} />}
+    
+    {ordersMapData && <Map type='singleLine' data={ordersMapData}/>}
     </div>
   );
 };

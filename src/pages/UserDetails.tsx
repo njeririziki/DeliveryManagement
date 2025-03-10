@@ -30,7 +30,8 @@ const UserDetails = () => {
        featureName: data.name,
        address:` ${data.address.street}, ${data.address.suite}`,
        coordinates: [+data.address.geo.lng, +data.address.geo.lat],
-        avatar: user1
+        avatar: user1,
+        type: "point",
       }]);
     }
   }, [data]);
@@ -88,7 +89,7 @@ const UserDetails = () => {
               </div>
             </CustomCollapse>
           </div>
-          {selectedUserMapData && <Map data={selectedUserMapData} />}
+          {selectedUserMapData && <Map type="point" data={selectedUserMapData} />}
         </div>
       ) : (
         <Typography.Text>No user</Typography.Text>
