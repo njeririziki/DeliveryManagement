@@ -17,9 +17,10 @@ const Orders = () => {
     const {isLoading, error, data} = useQuery({queryKey:['orders'], queryFn: fetchOrderData});
 
     const handleNavigation = (orderId: string)  => {
-      //  navigate(`/orders/${orderId}`)
+    
       sessionStorage.setItem('orderId', orderId);
        navigate(`/orderdetails`)
+    
     };
 if (error) {
     setError(error.message);

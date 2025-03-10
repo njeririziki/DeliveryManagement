@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { User } from "../types";
-import { Typography, Table } from "antd";
+import { Typography, Table , Skeleton} from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { useNavigate } from "react-router-dom";
 //import { fetchUserData } from "../services/UsersService";
 import { useError } from "../context/ErrorHandlingContext";
+import { useQuery } from "@tanstack/react-query";
 interface DataType {
   user: User;
 }
@@ -71,13 +72,13 @@ const UsersTable = () => {
   const navigate = useNavigate();
   const { setError } = useError();
 
-
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["users"],
+    queryFn: fetchUserData,
+  });
 
   useEffect(() => {
-    fetchUserData()
-      .then((data: User[]) => {
-        console.log({ fetchUserData: data });
-        
+       if(data) {
         const transformedData = data.map((user, index) => ({
           key: index,
           user: user,
@@ -93,18 +94,21 @@ const UsersTable = () => {
           email: user.email,
           zipcode: user.address?.zipcode,
         }));
+
         setUserData(transformedData);
-      })
-      .catch((error) => {
-        console.error(error);
-        return setError(error);
-      });
-  }, []);
+      }
+  }, [data]);
 
   const handleUserSelection = (record: DataType) => {
     navigate(`/users/${record.user.id}`);
   };
 
+
+  if (error) {
+    setError(error.message);
+    return <Typography.Text>Error loading user details</Typography.Text>;
+  }
+  if (isLoading) return <Skeleton active />;
   return (
     <div>
       <Typography.Title level={2}>Users</Typography.Title>

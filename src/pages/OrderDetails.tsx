@@ -1,40 +1,42 @@
 import React, { useEffect, useState } from "react";
+
 import { Descriptions, Skeleton, Typography } from "antd";
 import { Order } from "../types";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
+import OrderMap from "../components/map/NavigationMap";
 import { useQuery } from "@tanstack/react-query";
-import { fetchOrderData } from "../services/OrderService";
+import { fetchSpecificOrderData } from "../services/OrderService";
 import { useError } from "../context/ErrorHandlingContext";
 import CustomCollapse from "../components/custom/CustomCollapse";
 import Package from "../assets/package.svg";
 
-const OrderDetails = () => {
-  const id = Number(useParams<{ id: string }>().id);
+const OrderDetails: React.FC = () => {
+  const id = Number(sessionStorage.getItem("orderId"));
 
   const [order, setOrder] = useState<Order | null>(null);
   const { setError } = useError();
 
   const { isLoading, error, data } = useQuery({
-    queryKey: ["orders"],
-    queryFn: fetchOrderData,
+    queryKey: ["orders",id],
+    queryFn: ()=>fetchSpecificOrderData({id}),
   });
 
   useEffect(() => {
-    if (id && data && data.length > 0) {
-      const order = data.find((order) => Number(order.id) === id);
-
-      if (order) {
-        setOrder(order);
-      }
+    if (data) {
+      setOrder(data);
     }
-  }, [id, data]);
+  }, [data]);
 
-  if (error) return setError(error.message);
+  if (error) {
+    setError(error.message);
+    return <Typography.Text>Error loading order details</Typography.Text>;
+  }
   if (isLoading) return <Skeleton active />;
   if (!order) return <Typography.Text>No order available</Typography.Text>;
   return (
+    <div className="flex flex-row gap-4">
     <div className="w-1/3">
-      <Typography.Title level={5}>Order : GRSWFY0{order.id} </Typography.Title>
+      <Typography.Title level={5}>Order : {order.shipmentId} </Typography.Title>
 
       <CustomCollapse
         defaultOpen={true}
@@ -43,7 +45,7 @@ const OrderDetails = () => {
             <img src={Package} className="bg-gray-100 rounded-full p-2" />
             <div className="flex flex-col ">
               <p>Shipment ID </p>
-              <p className="font-semibold"> GRSWFY0{order.id}</p>
+              <p className="font-semibold"> {order.shipmentId}</p>
             </div>
           </div>
         }
@@ -69,6 +71,8 @@ const OrderDetails = () => {
           </div>
         </div>
       </CustomCollapse>
+    </div>
+    {order && <OrderMap order={order} />}
     </div>
   );
 };

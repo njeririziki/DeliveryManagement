@@ -2,6 +2,7 @@
 
 export interface Order {
     id: string;
+    shipmentId: string;
     customerId: number;
     customerName: string;
     status: string;
@@ -47,5 +48,20 @@ export interface Order {
     };
   }
 
+  export interface Feature {
+    featureName: string;
+    avatar: string;
+    coordinates: [number, number];
+    address: string;
+  }
+
+  export interface OrderFeature {
+    featureName: string;
+    avatar: string;
+    warehouseCoordinates: [number, number];
+    orderCoordinates?: [number, number];
+    destinationCoordinates: [number, number];
+    address: string;
+  }
  
   

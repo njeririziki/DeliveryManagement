@@ -14,14 +14,16 @@ function Routing() {
       
       <Routes>
         <Route path="/" element={<LoginPage />} />
+        
         <Route element={<BaseLayout />}>
           <Route path="/users" element={<Users />} />
           <Route path="/users/:id" element={<UserDetails />} />
           <Route path="/orders" element={<Orders />} />
-          <Route path="/orders/:id" element={<OrderDetails />} />
+          <Route path="/orderdetails" element={<OrderDetails />} />
           <Route path="/delivery" element={<DeliveryOverview />} />
           <Route path="/track" element={<SingleOrders />} />
         </Route>
+        <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
      
     </Router>
