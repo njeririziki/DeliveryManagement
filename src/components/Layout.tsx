@@ -1,13 +1,14 @@
-import React, {useState} from "react";
-import { TeamOutlined, UserOutlined, GlobalOutlined, FileTextOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { TeamOutlined, UserOutlined, GlobalOutlined, LogoutOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Breadcrumb, Layout, Menu } from "antd";
 import PlaneLogo from "../assets/planeflat.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { convertStringToTitleCase } from "../utils/helpers";
 import { Outlet } from "react-router-dom";
 import Popup from "./custom/ToastPopup";
 import { Typography } from "antd";
+import { useError } from "../context/ErrorHandlingContext";
 
 const { Content, Sider } = Layout;
 
@@ -30,40 +31,53 @@ function getItem(
 const items: MenuItem[] = [
   getItem("Orders", "orders", <UserOutlined />),
   getItem("Users", "users", <TeamOutlined />),
-  getItem("Deliveries", "delivery", <GlobalOutlined />),
+  getItem("Shipping", "delivery", <GlobalOutlined />),
 ];
 
 // interface BaseLayoutProps {
 //   children: React.ReactNode;
 // }
 
-const BaseLayout= () => {
+const BaseLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [openPopup, setOpenPopup] = useState(false)
+  const [openPopup, setOpenPopup] = useState(false);
+  const { error, clearError } = useError();
 
-
+  
   //check for authentication and redirect to login page if not authenticated
+  useEffect(() => {
+    if (!sessionStorage.getItem("isAuthenticated")) {
+      navigate('/');
+    }
+  }, []);
 
   const crumbs = location.pathname.split("/").filter((crumb) => crumb);
 
+   
+
+  useEffect(() => {
+    if (error) {
+      setOpenPopup(true);
+      setTimeout(() => {
+        setOpenPopup(false);
+        clearError();
+      }, 2000);
+    }
+  }, [error, clearError]);
+
   const handleNavigation: MenuProps["onClick"] = (e) => {
-    console.log(e.key);
     navigate(`/${e.key}`);
-  };
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  
+ };
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate('/');
+  }
 
   return (
     <Layout className="h-screen w-screen">
-      <Sider
-        breakpoint="lg"
-        collapsedWidth="0"
-        
-        style={{ background: colorBgContainer }}
-      >
-      
+      <Sider breakpoint="lg" collapsedWidth="0" style={{ background: "#fff" }}>
         <img
           src={PlaneLogo}
           alt="Plane Logo"
@@ -73,34 +87,39 @@ const BaseLayout= () => {
           theme="light"
           defaultSelectedKeys={["orders"]}
           mode="inline"
+          style={{}}
           onClick={handleNavigation}
           items={items}
         />
+        <div className="absolute bottom-0  flex flex-row gap-4  m-8 text-black hover:font-semibold hover:text-blue-500 cursor-pointer"
+         onClick={handleLogout}>
+        <LogoutOutlined />
+          <p >
+            Log out
+          </p>
+          </div>
       </Sider>
-      <Layout>
-   
+      <Layout className="overflow-hidden">
         <Content style={{ margin: "0 16px" }}>
-          {crumbs?.length !==0 && <Breadcrumb style={{ margin: "16px 0" }}>
-            {crumbs.map((crumb, index) => (
-              <Breadcrumb.Item key={index}>{convertStringToTitleCase(crumb)}</Breadcrumb.Item>
-            ))}
-          
-          </Breadcrumb>
-    }
-          <div
-            style={{
-              padding: 24,
-              minHeight: "90%",
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
+          {crumbs?.length !== 0 && (
+            <Breadcrumb style={{ margin: "16px 0" }}>
+              {crumbs.map((crumb, index) => (
+                <Breadcrumb.Item key={index}>
+                  {convertStringToTitleCase(crumb)}
+                </Breadcrumb.Item>
+              ))}
+            </Breadcrumb>
+          )}
+          <div className="p-4 pb-20 bg-white rounded-lg h-full overflow-y-auto">
             <Outlet />
           </div>
         </Content>
-        <Popup isOpen={openPopup} onClose={()=>setOpenPopup(false)}>
-    <Typography.Title level={5}  className="text-red-600">Error</Typography.Title>
-    </Popup>
+        <Popup isOpen={openPopup} onClose={() => setOpenPopup(false)}>
+          <Typography.Title level={5} type="danger">
+            Error
+          </Typography.Title>
+          <Typography.Text type="danger">{error}</Typography.Text>
+        </Popup>
       </Layout>
     </Layout>
   );

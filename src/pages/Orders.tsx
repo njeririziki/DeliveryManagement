@@ -17,11 +17,15 @@ const Orders = () => {
     const {isLoading, error, data} = useQuery({queryKey:['orders'], queryFn: fetchOrderData});
 
     const handleNavigation = (orderId: string)  => {
-       navigate(`/orders/${orderId}`)
+      //  navigate(`/orders/${orderId}`)
+      sessionStorage.setItem('orderId', orderId);
+       navigate(`/orderdetails`)
     };
-
+if (error) {
+    setError(error.message);
+    return <Typography.Text>Error loading order details</Typography.Text>;
+  }
     if(isLoading) return <Skeleton active />
-    if(error) return setError(error.message);
     if(!data) return <Typography.Text> No orders available</Typography.Text>
     return ( 
         <div className='w-full' >
@@ -37,13 +41,14 @@ const Orders = () => {
             header={<p className='font-semibold'>Shipped Orders</p>}
             itemLayout="horizontal"
             dataSource={data}
-            renderItem={(item, index) => (
+            renderItem={(item,index) => (
             <List.Item
+            key={index}
             actions={[<a key="list-loadmore-more" onClick={()=>handleNavigation(item.id)}>more</a>]}
             >
                 <List.Item.Meta
                  avatar={<Avatar src={Package} />}
-                title={`Shipment ID: GRSWFY0${item.id}  `}
+                title={`Shipment ID: ${item.shipmentId}  `}
                 description={`${item.customerName}. Delivery by ${item.estimatedDelivery}`}              
                 />
             </List.Item>
@@ -57,6 +62,7 @@ const Orders = () => {
             dataSource={data}
             renderItem={(item, index) => (
             <List.Item
+            key={index}
             // actions={[<a key="list-loadmore-more" onClick={()=>handleNavigation(item.id)}>more</a>]}
             >
                 <List.Item.Meta

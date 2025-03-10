@@ -1,5 +1,5 @@
 import React from "react";
-
+import {CloseOutlined} from "@ant-design/icons";
 interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
@@ -18,12 +18,12 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, children }) => {
           isOpen ? "scale-100" : "scale-75"
         }`}
       >
-        <p
-          className="absolute mr-2 top-2 right-2 bg-white text-sm text-black hover:text-black"
+        <div
+          className="absolute mr-2 top-2 right-2  text-red-500 hover:text-black"
           onClick={onClose}
         >
-          ✖
-        </p>
+          <CloseOutlined />
+        </div>
         {children}
       </div>
     </div>
