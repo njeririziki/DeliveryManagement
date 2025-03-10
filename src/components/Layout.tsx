@@ -43,7 +43,7 @@ const BaseLayout = () => {
   const navigate = useNavigate();
   const [openPopup, setOpenPopup] = useState(false);
   const { error, clearError } = useError();
-
+ const isAuthenticated = sessionStorage.getItem("isAuthenticated");
   
   //check for authentication and redirect to login page if not authenticated
   useEffect(() => {
@@ -74,7 +74,10 @@ const BaseLayout = () => {
     sessionStorage.clear();
     navigate('/');
   }
-
+  
+ if (!isAuthenticated) {
+    return <Typography.Text>Loading...</Typography.Text>;
+  }
   return (
     <Layout className="h-screen w-screen">
       <Sider breakpoint="lg" collapsedWidth="0" style={{ background: "#fff" }}>

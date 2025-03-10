@@ -1,32 +1,15 @@
 import { User } from '../types';
-import axios from 'axios';
 
-
-export const getAllUsers = () => {
-  return new Promise((resolve, reject) => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then(response => response.json())
-      .then(data => {
-          console.log({ data });
-          
-        if (data.status === 'success') {
-          return resolve({ data: data.data });
-        }
-
-      }).catch(err => {
-        reject(err)
-        console.log(err)
-      }).catch(error => {
-        console.error('sign up failed', error);
-      });
-  })
-}
 
 export const fetchUserData = (): Promise<User[]> => {
   return new Promise((resolve, reject) => {
     try {
-     axios.get("https://jsonplaceholder.typicode.com/users")
-        .then(response => response.data)
+      fetch("https://jsonplaceholder.typicode.com/users" , {
+        headers: {
+          "x-mirage-bypass": "true",
+        },
+      })
+      .then(response => response.json())    
         .then((data: User[]) => {
           console.log({ data });
           resolve(data);
@@ -43,22 +26,26 @@ export const fetchUserData = (): Promise<User[]> => {
   });
 };
 
-export const fetchUserDetails = async ({ id }: { id: number }): Promise<User> => {
+export const fetchUserDetails =  ({ id }: { id: number }): Promise<User> => {
+  return new Promise((resolve, reject) => {
   try {
-    const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
+    fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
       headers: {
         "x-mirage-bypass": "true",
       },
-    });
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+    }).then(response => response.json())
+    .then(data => {
+      console.log({ data });
+      resolve(data);
     }
-    const data = await response.json();
-    console.log({ data });
-
-    return data;
+    ).catch(err => {
+      reject(err)
+      console.log(err)
+    })
+    
   } catch (error) {
     console.error("Failed to fetch data:", error);
-    return {} as User;
+    return reject(error);
   }
+})
 };

@@ -5,7 +5,6 @@ import Orders from "./Orders";
 import OrderDetails from "./OrderDetails";
 import DeliveryOverview from "./DeliveryOverview";
 import BaseLayout from "../components/Layout";
-import SingleOrders from "./SingleOrder";
 import LoginPage from "./LoginPage";
 
 function Routing() {
@@ -21,7 +20,7 @@ function Routing() {
           <Route path="/orders" element={<Orders />} />
           <Route path="/orderdetails" element={<OrderDetails />} />
           <Route path="/delivery" element={<DeliveryOverview />} />
-          <Route path="/track" element={<SingleOrders />} />
+        
         </Route>
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
