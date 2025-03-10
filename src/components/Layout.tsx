@@ -1,10 +1,14 @@
-import React, { use, useEffect, useState } from "react";
-import { TeamOutlined, UserOutlined, GlobalOutlined, LogoutOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import {
+  TeamOutlined,
+  UserOutlined,
+  GlobalOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Breadcrumb, Layout, Menu } from "antd";
+import { Layout, Menu } from "antd";
 import PlaneLogo from "../assets/planeflat.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
-import { convertStringToTitleCase } from "../utils/helpers";
 import { Outlet } from "react-router-dom";
 import Popup from "./custom/ToastPopup";
 import { Typography } from "antd";
@@ -34,33 +38,25 @@ const items: MenuItem[] = [
   getItem("Shipping", "delivery", <GlobalOutlined />),
 ];
 
-// interface BaseLayoutProps {
-//   children: React.ReactNode;
-// }
-
 const BaseLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [openPopup, setOpenPopup] = useState(false);
-  const [currentMenuItem, setCurrentMenuItem] = useState('orders');
+  const [currentMenuItem, setCurrentMenuItem] = useState("orders");
   const { error, clearError } = useError();
- const isAuthenticated = sessionStorage.getItem("isAuthenticated");
-  
+  const isAuthenticated = sessionStorage.getItem("isAuthenticated");
+
   //check for authentication and redirect to login page if not authenticated
   useEffect(() => {
     if (!sessionStorage.getItem("isAuthenticated")) {
-      navigate('/');
+      navigate("/");
     }
   }, []);
 
-
-
   useEffect(() => {
-
     const path = location.pathname.split("/").filter((crumb) => crumb);
     setCurrentMenuItem(path[0]);
   }, [location]);
-   
 
   useEffect(() => {
     if (error) {
@@ -74,14 +70,13 @@ const BaseLayout = () => {
 
   const handleNavigation: MenuProps["onClick"] = (e) => {
     navigate(`/${e.key}`);
-  
- };
+  };
   const handleLogout = () => {
     sessionStorage.clear();
-    navigate('/');
-  }
-  
- if (!isAuthenticated) {
+    navigate("/");
+  };
+
+  if (!isAuthenticated) {
     return <Typography.Text>Loading...</Typography.Text>;
   }
   return (
@@ -93,39 +88,34 @@ const BaseLayout = () => {
           style={{ width: "7rem", marginLeft: "1rem" }}
         />
         <Menu
-          theme="light"        
+          theme="light"
           selectedKeys={[currentMenuItem]}
           mode="inline"
           style={{}}
           onClick={handleNavigation}
           items={items}
         />
-        <div className="absolute bottom-0  flex flex-row gap-4  m-8 text-black hover:font-semibold hover:text-blue-500 cursor-pointer"
-         onClick={handleLogout}>
-        <LogoutOutlined />
-          <p >
-            Log out
-          </p>
-          </div>
+        <div
+          className="absolute bottom-0  flex flex-row gap-4  m-8 text-black hover:font-semibold hover:text-blue-500 cursor-pointer"
+          onClick={handleLogout}
+        >
+          <LogoutOutlined />
+          <p>Log out</p>
+        </div>
       </Sider>
       <Layout className="overflow-hidden">
         <Content style={{ margin: "0 16px" }}>
-          {/* {crumbs?.length !== 0 && (
-            <Breadcrumb style={{ margin: "16px 0" }}>
-              {crumbs.map((crumb, index) => (
-                <Breadcrumb.Item key={index}>
-                  {convertStringToTitleCase(crumb)}
-                </Breadcrumb.Item>
-              ))}
-            </Breadcrumb>
-          )} */}
           <div className="p-4 pb-20 bg-white rounded-lg h-full overflow-y-auto">
             <Outlet />
           </div>
         </Content>
-        <Popup isOpen={openPopup} onClose={() => {
-          clearError();
-          setOpenPopup(false)}}>
+        <Popup
+          isOpen={openPopup}
+          onClose={() => {
+            clearError();
+            setOpenPopup(false);
+          }}
+        >
           <Typography.Title level={5} type="danger">
             Error
           </Typography.Title>
