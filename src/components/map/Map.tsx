@@ -45,6 +45,7 @@ const Map: React.FC<MapProps> = ({ type, data }) => {
   }, []);
 
   const createMultipleRoutes = useCallback(() => {
+  
     if (type === "point" || !mapRef.current) return;
 
     // Clear existing sources and layers
@@ -80,7 +81,7 @@ const Map: React.FC<MapProps> = ({ type, data }) => {
         ]);
       }
     });
-  }, [data]);
+  }, [data,type]);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -106,7 +107,7 @@ const Map: React.FC<MapProps> = ({ type, data }) => {
       default:
         break;
     }
-  }, [data]);
+  }, [data,type]);
 
   useEffect(() => {
     if (mapLoaded && mapRef.current) {

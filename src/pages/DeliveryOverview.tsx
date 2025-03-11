@@ -9,13 +9,13 @@ import userAvatars from "../data/userAvatars";
 import { useEffect, useState } from "react";
 import { Feature } from "../types";
 import StandardButton from "../components/custom/StandardButton";
-import { useNavigate } from "react-router-dom";
 
 const DeliveryOverview = () => {
-  const navigate = useNavigate();
+ 
   const { setError } = useError();
   const [typeOfLayer, setTypeOfLayer] = useState<string | null>(null);
   const [ordersMapData, setOrdersMapData] = useState<Feature[] | null>(null)
+  const [singleOrderMap, setSingleOrderMap] = useState<Feature[] | null>(null)
   const { isLoading, error, data } = useQuery({
     queryKey: ["orders"],
     queryFn: fetchOrderData,
@@ -40,10 +40,10 @@ const DeliveryOverview = () => {
   
  
 
-  const showSingleLine = (id: string) => {
-  
-    sessionStorage.setItem('orderId', id);
-    navigate(`/orderdetails`)
+  const showSingleLine = (id: string) => {    
+    const updatedData = ordersMapData?.filter((order) => order.featureName === id) || [];
+    setSingleOrderMap(updatedData);
+    setTypeOfLayer('singleLine');
   }
 
 
@@ -94,18 +94,16 @@ const DeliveryOverview = () => {
                   <StandardButton
                     name="Track"
                     customStyles="mt-4 h-fit bg-green-500 hover:bg-green-700 text-white"
-                    onClick={() => showSingleLine(order.id)}
+                    onClick={() => showSingleLine(order.shipmentId)}
                     />
-                 {/* <div className="text-xs bg-green-50 text-green-500 border border-green-300 p-2 h-fit text-nowrap rounded-full ">
-                    
-                    {order.status}
-                  </div> */}
+                 
                 </div>
               </CustomCollapse>
             </div>
           ))}
       </div>
-      {ordersMapData && typeOfLayer && <Map type={typeOfLayer} data={ordersMapData}/>}
+      {ordersMapData && typeOfLayer && <Map type={typeOfLayer}
+       data={singleOrderMap?.length? singleOrderMap :ordersMapData}/>}
     </div>
   );
 };
