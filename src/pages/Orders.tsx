@@ -13,12 +13,14 @@ import { useState } from "react";
 const Orders = () => {
   const navigate = useNavigate();
   const { setError } = useError();
+  const [searchQuery, setSearchQuery] = useState("");
+
+
   const { isLoading, error, data } = useQuery({
     queryKey: ["orders"],
     queryFn: fetchOrderData,
   });
-  const [searchQuery, setSearchQuery] = useState("");
-
+  
   const handleNavigation = (orderId: string) => {
     sessionStorage.setItem("orderId", orderId);
     navigate(`/orderdetails`);
