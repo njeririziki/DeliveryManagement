@@ -5,7 +5,7 @@ import { fetchUserDetails } from "../services/UsersService";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CustomCollapse from "../components/custom/CustomCollapse";
-import user1 from "../assets/user1.jpg";
+import userAvatars from "../data/userAvatars";
 import { useQuery } from "@tanstack/react-query";
 import { useError } from "../context/ErrorHandlingContext";
 
@@ -30,7 +30,8 @@ const UserDetails = () => {
        featureName: data.name,
        address:` ${data.address.street}, ${data.address.suite}`,
        coordinates: [+data.address.geo.lng, +data.address.geo.lat],
-        avatar: user1
+        avatar: userAvatars[data.id - 1].src,
+        type: "point",
       }]);
     }
   }, [data]);
@@ -50,7 +51,8 @@ const UserDetails = () => {
               topPart={
                 <div className="flex flex-row  items-center gap-4">
                   <img
-                    src={user1}
+                    src={userAvatars[selectedUser.id - 1].src}
+                    alt={userAvatars[selectedUser.id - 1].alt}
                     className="bg-gray-100 rounded-full w-16 h-16"
                   />
                   <div className="flex flex-col ">
@@ -88,7 +90,7 @@ const UserDetails = () => {
               </div>
             </CustomCollapse>
           </div>
-          {selectedUserMapData && <Map data={selectedUserMapData} />}
+          {selectedUserMapData && <Map type="point" data={selectedUserMapData} />}
         </div>
       ) : (
         <Typography.Text>No user</Typography.Text>

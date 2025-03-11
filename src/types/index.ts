@@ -51,7 +51,10 @@ export interface Order {
   export interface Feature {
     featureName: string;
     avatar: string;
+    ordercoordinates?: [number, number];
     coordinates: [number, number];
+    type?: string;
+    customerName?: string;
     address: string;
   }
 
