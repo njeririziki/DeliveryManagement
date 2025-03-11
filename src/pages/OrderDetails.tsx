@@ -45,8 +45,8 @@ const OrderDetails: React.FC = () => {
   if (isLoading) return <Skeleton active />;
   if (!order) return <Typography.Text>No order available</Typography.Text>;
   return (
-    <div className="flex flex-row gap-4">
-    <div className="w-1/3">
+    <div className=" w-full h-full flex  flex-col lg:flex-row gap-4">
+    <div className="w-full lg:w-1/3">
       <Typography.Title level={5}>Order : {order.shipmentId} </Typography.Title>
 
       <CustomCollapse
