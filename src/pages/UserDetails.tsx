@@ -44,8 +44,8 @@ const UserDetails = () => {
   return (
     <div>
       {selectedUser ? (
-        <div className="flex flex-row gap-4">
-          <div className="w-1/2">
+        <div className=" w-full h-full flex flex-col lg:flex-row gap-4">
+          <div className="w-full lg:w-1/2">
             <CustomCollapse
               defaultOpen={true}
               topPart={
