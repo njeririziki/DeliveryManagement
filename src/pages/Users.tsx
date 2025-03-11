@@ -4,13 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { fetchUserData } from "../services/UsersService";
 import { useError } from "../context/ErrorHandlingContext";
 import { useQuery } from "@tanstack/react-query";
-import { SearchOutlined } from '@ant-design/icons';
-import type { InputRef, TableColumnsType, TableColumnType } from 'antd';
-import { Button, Input, Space, Table, Typography, Skeleton } from 'antd';
-import type { FilterDropdownProps } from 'antd/es/table/interface';
-import Highlighter from 'react-highlight-words'
-
-
+import { SearchOutlined } from "@ant-design/icons";
+import type { InputRef, TableColumnsType, TableColumnType } from "antd";
+import { Button, Input, Space, Table, Typography, Skeleton } from "antd";
+import type { FilterDropdownProps } from "antd/es/table/interface";
+import Highlighter from "react-highlight-words";
 
 interface DataType {
   user: User;
@@ -24,36 +22,23 @@ interface DataType {
 
 type DataIndex = keyof DataType;
 
-
-
-// const onChange: TableProps<DataType>["onChange"] = (
-//   pagination,
-//   filters,
-//   sorter,
-//   extra
-// ) => {
-//   console.log("params", pagination, filters, sorter, extra);
-// };
-
 const UsersTable = () => {
   const [userData, setUserData] = useState<DataType[]>([]);
   const navigate = useNavigate();
   const { setError } = useError();
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
-
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["users"],
     queryFn: fetchUserData,
   });
 
-
   const handleSearch = (
     selectedKeys: string[],
-    confirm: FilterDropdownProps['confirm'],
-    dataIndex: DataIndex,
+    confirm: FilterDropdownProps["confirm"],
+    dataIndex: DataIndex
   ) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -62,24 +47,38 @@ const UsersTable = () => {
 
   const handleReset = (clearFilters: () => void) => {
     clearFilters();
-    setSearchText('');
+    setSearchText("");
   };
 
-  const getColumnSearchProps = (dataIndex: DataIndex): TableColumnType<DataType> => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+  const getColumnSearchProps = (
+    dataIndex: DataIndex
+  ): TableColumnType<DataType> => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
       <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
         <Input
           ref={searchInput}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
-          style={{ marginBottom: 8, display: 'block' }}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            handleSearch(selectedKeys as string[], confirm, dataIndex)
+          }
+          style={{ marginBottom: 8, display: "block" }}
         />
         <Space>
           <Button
-          //  type="primary"
-            onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+            //  type="primary"
+            onClick={() =>
+              handleSearch(selectedKeys as string[], confirm, dataIndex)
+            }
             icon={<SearchOutlined />}
             size="small"
             style={{ width: 90 }}
@@ -93,7 +92,7 @@ const UsersTable = () => {
           >
             Reset
           </Button>
-         
+
           <Button
             type="link"
             size="small"
@@ -107,7 +106,7 @@ const UsersTable = () => {
       </div>
     ),
     filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
+      <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]
@@ -124,17 +123,15 @@ const UsersTable = () => {
     render: (text) =>
       searchedColumn === dataIndex ? (
         <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text ? text.toString() : ''}
+          textToHighlight={text ? text.toString() : ""}
         />
       ) : (
         text
       ),
   });
-
-  
 
   const columns: TableColumnsType<DataType> = [
     {
@@ -143,59 +140,56 @@ const UsersTable = () => {
       showSorterTooltip: { target: "full-header" },
       sorter: (a, b) => a.user.name.length - b.user.name.length,
       sortDirections: ["descend"],
-      ...getColumnSearchProps('name')
+      ...getColumnSearchProps("name"),
     },
     {
       title: "Email",
       dataIndex: "email",
       defaultSortOrder: "descend",
       sorter: (a, b) => a.user.email.localeCompare(b.user.email),
-      ...getColumnSearchProps('email')
+      ...getColumnSearchProps("email"),
     },
     {
       title: "Phone",
       dataIndex: "phone",
-  
     },
     {
       title: "Address",
       dataIndex: "address",
-      ...getColumnSearchProps('address')
+      ...getColumnSearchProps("address"),
     },
     {
       title: "Zipcode",
       dataIndex: "zipcode",
-      ...getColumnSearchProps('zipcode')
+      ...getColumnSearchProps("zipcode"),
     },
   ];
 
-
   useEffect(() => {
-       if(data) {
-        const transformedData = data.map((user, index) => ({
-          key: index,
-          user: user,
-          name: user.name,
-          username: user.username,
-          address:
-            user.address?.city +
-            ", " +
-            user.address?.street +
-            ". " +
-            user.address?.suite,
-          phone: user.phone,
-          email: user.email,
-          zipcode: user.address?.zipcode,
-        }));
+    if (data) {
+      const transformedData = data.map((user, index) => ({
+        key: index,
+        user: user,
+        name: user.name,
+        username: user.username,
+        address:
+          user.address?.city +
+          ", " +
+          user.address?.street +
+          ". " +
+          user.address?.suite,
+        phone: user.phone,
+        email: user.email,
+        zipcode: user.address?.zipcode,
+      }));
 
-        setUserData(transformedData);
-      }
+      setUserData(transformedData);
+    }
   }, [data]);
 
   const handleUserSelection = (record: DataType) => {
     navigate(`/users/${record.user.id}`);
   };
-
 
   if (error) {
     setError(error.message);
@@ -212,7 +206,7 @@ const UsersTable = () => {
         showSorterTooltip={{ target: "sorter-icon" }}
         onRow={(record) => {
           return {
-            onClick: () => handleUserSelection(record), 
+            onClick: () => handleUserSelection(record),
           };
         }}
       />

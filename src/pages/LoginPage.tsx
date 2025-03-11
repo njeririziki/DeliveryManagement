@@ -59,9 +59,7 @@ const LoginPage: React.FC = () => {
           />
         </Form.Item>
         <Form.Item>
-          <Typography className="text-center font-semibold">
-            Continue with Google
-          </Typography>
+          
         </Form.Item>
       </Form>
       <Popup

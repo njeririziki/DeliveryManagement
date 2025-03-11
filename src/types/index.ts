@@ -53,7 +53,8 @@ export interface Order {
     avatar: string;
     ordercoordinates?: [number, number];
     coordinates: [number, number];
-    type: string;
+    type?: string;
+    customerName?: string;
     address: string;
   }
 

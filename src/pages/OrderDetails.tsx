@@ -7,7 +7,7 @@ import { fetchSpecificOrderData } from "../services/OrderService";
 import { useError } from "../context/ErrorHandlingContext";
 import CustomCollapse from "../components/custom/CustomCollapse";
 import Package from "../assets/package.svg";
-import User4 from "../assets/user4.jpg";
+import userAvatars from "../data/userAvatars";
 
 const OrderDetails: React.FC = () => {
   const id = Number(sessionStorage.getItem("orderId"));
@@ -29,9 +29,10 @@ const OrderDetails: React.FC = () => {
       setOrdersMapData([{
         featureName: data.shipmentId,
         address: data.address,
+        customerName: data.customerName,
         ordercoordinates: [Number(data.orderLocation.lng), Number(data.orderLocation.lat)] as [number, number],
         coordinates: [Number(data.destinationLocation.lng), Number(data.destinationLocation.lat)] as [number, number],
-        avatar: User4,
+        avatar: userAvatars[data.customerId - 1].src,
         type: "singleLine",
       }]);
     }

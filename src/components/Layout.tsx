@@ -55,6 +55,7 @@ const BaseLayout = () => {
 
   useEffect(() => {
     const path = location.pathname.split("/").filter((crumb) => crumb);
+    if(path[0]=== 'orderdetails') return setCurrentMenuItem('orders');
     setCurrentMenuItem(path[0]);
   }, [location]);
 
