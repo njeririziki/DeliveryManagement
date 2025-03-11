@@ -33,6 +33,4 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, children }) => {
 export default Popup;
 
 
-// className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 transition-opacity
-//   ${isOpen ? "opacity-100 visible" : "opacity-0 invisible" }`
-// }
+

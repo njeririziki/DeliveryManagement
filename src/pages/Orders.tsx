@@ -44,21 +44,22 @@ const Orders = () => {
 
   return (
     <div className="w-full">
-      <div className="w-ful lg:w-1/3 p-4">
-          <Input
-          placeholder="Search by user or tracking ID"
-          
-          value={searchQuery}
-          onChange={handleSearch}
-          size="small"
-          className="  "
-        />
-        </div>
+  
       <div className="w-full bg-white mb-4 p-4 flex flex-col  lg:flex-row justify-stretch gap-4 rounded-lg ">
         {statisticData.map((data, index) => (
           <StaticCard key={index} title={data.title} card={data.card} />
         ))}
       </div>
+      <div className="w-full justify-end lg:w-1/2 p-4">
+          <Input
+          placeholder="Search by user or tracking ID"
+          
+          value={searchQuery}
+          onChange={handleSearch}
+          size="large"
+          className="  "
+        />
+        </div>
       <div className="w-full p-4 flex flex-col lg:flex-row justify-stretch gap-4 rounded-lg ">
         <div className="bg-white w-full lg:w-1/2 border border-gray-200 rounded-lg p-4">
           <List
