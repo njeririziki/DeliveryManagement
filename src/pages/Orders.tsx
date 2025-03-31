@@ -7,6 +7,7 @@ import StaticCard from "../components/custom/StatisticCard";
 import { statisticData } from "../data/statisticalData";
 import { useError } from "../context/ErrorHandlingContext";
 import { useState } from "react";
+import CreateEditOrder from "../components/reusable/CreateEditOrder";
 
 
 
@@ -14,6 +15,7 @@ const Orders = () => {
   const navigate = useNavigate();
   const { setError } = useError();
   const [searchQuery, setSearchQuery] = useState("");
+
 
 
   const { isLoading, error, data } = useQuery({
@@ -37,6 +39,7 @@ const Orders = () => {
     order.shipmentId.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+
   if (error) {
     setError(error.message);
     return <Typography.Text>Error loading order details</Typography.Text>;
@@ -52,7 +55,8 @@ const Orders = () => {
           <StaticCard key={index} title={data.title} card={data.card} />
         ))}
       </div>
-      <div className="w-full justify-end lg:w-1/2 p-4">
+      <div className="w-full flex  justify-between lg:flex-column p-4">
+        <div className="w-full lg:w-1/2">
           <Input
           placeholder="Search by user or tracking ID"
           
@@ -61,6 +65,8 @@ const Orders = () => {
           size="large"
           className="  "
         />
+        </div>
+        <CreateEditOrder />
         </div>
       <div className="w-full p-4 flex flex-col lg:flex-row justify-stretch gap-4 rounded-lg ">
         <div className="bg-white w-full lg:w-1/2 border border-gray-200 rounded-lg p-4">
@@ -120,6 +126,7 @@ const Orders = () => {
           />
         </div>
       </div>
+     
     </div>
   );
 };
