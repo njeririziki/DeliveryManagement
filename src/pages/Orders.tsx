@@ -1,4 +1,4 @@
-import { Avatar, List, Skeleton, Typography, Input } from "antd";
+import { Avatar, List, Skeleton, Typography, Input, Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 import { fetchOrderData } from "../services/OrderService";
 import { useQuery } from "@tanstack/react-query";
@@ -7,6 +7,8 @@ import StaticCard from "../components/custom/StatisticCard";
 import { statisticData } from "../data/statisticalData";
 import { useError } from "../context/ErrorHandlingContext";
 import { useState } from "react";
+import StandardButton from "../components/custom/StandardButton";
+import CreateEditOrder from "../components/reusable/CreateEditOrder";
 
 
 
@@ -14,6 +16,8 @@ const Orders = () => {
   const navigate = useNavigate();
   const { setError } = useError();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
 
   const { isLoading, error, data } = useQuery({
@@ -36,6 +40,17 @@ const Orders = () => {
     order.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
     order.shipmentId.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   if (error) {
     setError(error.message);
@@ -52,7 +67,8 @@ const Orders = () => {
           <StaticCard key={index} title={data.title} card={data.card} />
         ))}
       </div>
-      <div className="w-full justify-end lg:w-1/2 p-4">
+      <div className="w-full flex  justify-between lg:flex-column p-4">
+        <div className="w-full lg:w-1/2">
           <Input
           placeholder="Search by user or tracking ID"
           
@@ -61,6 +77,8 @@ const Orders = () => {
           size="large"
           className="  "
         />
+        </div>
+       <StandardButton name='Create Order'  onClick={showModal} />
         </div>
       <div className="w-full p-4 flex flex-col lg:flex-row justify-stretch gap-4 rounded-lg ">
         <div className="bg-white w-full lg:w-1/2 border border-gray-200 rounded-lg p-4">
@@ -120,6 +138,14 @@ const Orders = () => {
           />
         </div>
       </div>
+      <Modal
+        title="Order Details"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        >
+          <CreateEditOrder />
+        </Modal>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 const CreateEditUserDetails = () => {
     return ( 
         <div>
-            <h1>CreateEditUserDetails</h1>
+            
             <form>
                 <label>First Name</label>
                 <input type="text" placeholder="First Name" />

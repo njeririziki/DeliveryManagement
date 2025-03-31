@@ -3,15 +3,15 @@
 const CreateEditOrder = () => {
     return ( 
         <div>
-            <h1>CreateEditOrder</h1>
-            <form>
+       
+            <form className="grid grid-cols-4 gap-4">
                 <label>Order Name</label>
                 <input type="text" placeholder="Order Name" />
                 <label>Order Description</label>
                 <input type="text" placeholder="Order Description" />
                 <label>Order Price</label>
                 <input type="text" placeholder="Order Price" />
-                <button>Submit</button>
+                <button type="submit">Submit</button>
             </form>
         </div>
      );
