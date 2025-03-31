@@ -4,16 +4,16 @@ import {User} from '../../types'
 import userAvatars from '../../data/userAvatars'
 
 interface UserCollapseProps {
-   openOrder: boolean;
+   openUser: boolean;
     selectedUser:User,
     actions: React.ReactNode;
 }
 
-const UserCollapse:React.FC<UserCollapseProps>= ({openOrder, selectedUser, actions}) => {
+const UserCollapse:React.FC<UserCollapseProps>= ({openUser, selectedUser, actions}) => {
     return (
         <div>
              <CustomCollapse
-              defaultOpen={openOrder}
+              defaultOpen={openUser}
               topPart={
                 <div className="flex flex-row  items-center gap-4">
                   <img
