@@ -4,7 +4,7 @@ const CreateEditOrder = () => {
     return ( 
         <div>
        
-            <form className="grid grid-cols-4 gap-4">
+            <form className="grid grid-cols-2 gap-4">
                 <label>Order Name</label>
                 <input type="text" placeholder="Order Name" />
                 <label>Order Description</label>
