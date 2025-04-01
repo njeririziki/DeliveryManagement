@@ -1,9 +1,13 @@
 import { Modal } from "antd";
-import { useState } from "react";
+import React, { useState } from "react";
 import StandardButton from "../custom/StandardButton";
 
+interface CreateEditOrderProps {
+    name?: string;
+    marker?: React.ReactNode; 
+}
 
-const CreateEditOrder = () => {
+const CreateEditOrder: React.FC<CreateEditOrderProps> = ({name,marker}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const showModal = () => {
@@ -20,7 +24,11 @@ const CreateEditOrder = () => {
 
     return ( 
         <div>
-             <StandardButton name='Create Order'  onClick={showModal} />
+          <div  onClick={showModal} >
+          {marker ? marker : 
+             <StandardButton name={name? name:'Create Order'}  onClick={showModal} />
+          }
+          </div>
          <Modal
         title="Order Details"
         open={isModalOpen}

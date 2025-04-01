@@ -12,6 +12,7 @@ import { useError } from "../context/ErrorHandlingContext";
 import OrderCollapseComponent from "../components/reusable/OrderCollapse";
 import StandardButton from "../components/custom/StandardButton";
 import UserCollapse from "../components/reusable/UserCollapse";
+import CreateEditUserDetails from "../components/reusable/CreateEditUserDetails";
 
 const UserDetails = () => {
 
@@ -93,9 +94,12 @@ const UserDetails = () => {
             selectedUser={selectedUser}
             openUser={true}
             actions={
-              <div className="text-xs bg-gray-50 text-gray-500 border border-gray-300 p-2 h-fit text-nowrap rounded-full ">
-              {"Edit"}
+              <CreateEditUserDetails marker={
+              <div              
+              className="mr-4 text-xs bg-gray-50 text-gray-500 border border-gray-300 p-2 h-fit text-nowrap rounded-full ">
+              Edit
             </div>
+            } />
             }
             />
             <Typography.Title level={5}>Current Orders</Typography.Title>
