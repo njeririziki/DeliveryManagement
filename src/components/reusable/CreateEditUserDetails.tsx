@@ -25,7 +25,7 @@ const CreateEditUserDetails : React.FC<CreateEditUserProps> = ({name,marker})=> 
         <div>
             <div  onClick={showModal} >
           {marker ? marker : 
-             <StandardButton name={name? name:'Create Order'}  onClick={showModal} />
+             <StandardButton name={name? name:'Create User'}  onClick={showModal} />
           }
           </div>
                <Modal
@@ -43,7 +43,7 @@ const CreateEditUserDetails : React.FC<CreateEditUserProps> = ({name,marker})=> 
                 <input type="text" placeholder="Email" />
                 <label>Phone</label>
                 <input type="text" placeholder="Phone" />
-                <button>Submit</button>
+                
             </form>
             </Modal>
         </div>

@@ -9,6 +9,7 @@ import type { InputRef, TableColumnsType, TableColumnType } from "antd";
 import { Button, Input, Space, Table, Typography, Skeleton } from "antd";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 import Highlighter from "react-highlight-words";
+import CreateEditUserDetails from "../components/reusable/CreateEditUserDetails";
 
 interface DataType {
   user: User;
@@ -197,8 +198,10 @@ const UsersTable = () => {
   if (isLoading) return <Skeleton active />;
   return (
     <div>
-      <Typography.Title level={2}>Users</Typography.Title>
-
+      <div className="flex justify-between items-center mb-4">
+      <Typography.Title level={3}>Users</Typography.Title>
+      <CreateEditUserDetails/>
+      </div>
       <Table<DataType>
         columns={columns}
         dataSource={userData}
