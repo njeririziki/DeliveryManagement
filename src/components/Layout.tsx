@@ -4,16 +4,19 @@ import {
   GlobalOutlined,
   LogoutOutlined,
   FileTextOutlined,
+  SettingOutlined,
+  TruckOutlined
 
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import {  Layout, Menu, theme  } from "antd";
+import { Layout, Menu, theme  } from "antd";
 import PlaneLogo from "../assets/planeflat.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import Popup from "./custom/ToastPopup";
 import { Typography } from "antd";
 import { useError } from "../context/ErrorHandlingContext";
+import userAvatars from "../data/userAvatars";
 
 const {Header, Content, Sider } = Layout;
 
@@ -34,9 +37,12 @@ function getItem(
 }
 
 const items: MenuItem[] = [
+  // getItem("Dashboard", "dashboard", <TeamOutlined />),
   getItem("Orders", "orders", <FileTextOutlined />),
   getItem("Users", "users", <TeamOutlined />),
   getItem("Deliveries", "delivery", <GlobalOutlined />),
+  getItem("Couriers", "couriers", <TruckOutlined />),
+  getItem("Settings", "settings", <SettingOutlined/>),
 ];
 
 const BaseLayout = () => {
@@ -119,8 +125,14 @@ const BaseLayout = () => {
       <Header 
       style={{ padding: 0, background: colorBgContainer }}
       className="flex justify-end items-center bg-white px-4">
-    
- 
+    <div className="mr-4 flex flex-row gap-4 items-center">
+    <img
+                    src={userAvatars[1].src}
+                    alt={userAvatars[1].alt}
+                    className="bg-gray-100 rounded-full w-10 h-10"
+            />
+            <p className="text-sm">Admin</p>
+            </div>
         </Header>
         <Content className="m-4">
           <div className="p-4 pb-20 bg-white rounded-lg h-full overflow-y-auto">

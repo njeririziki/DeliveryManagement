@@ -1,4 +1,4 @@
-import { Avatar, List, Skeleton, Typography, Input } from "antd";
+import { Avatar, List, Skeleton, Typography, Input, Divider } from "antd";
 import { useNavigate } from "react-router-dom";
 import { fetchOrderData } from "../services/OrderService";
 import { useQuery } from "@tanstack/react-query";
@@ -8,6 +8,7 @@ import { statisticData } from "../data/statisticalData";
 import { useError } from "../context/ErrorHandlingContext";
 import { useState } from "react";
 import CreateEditOrder from "../components/reusable/CreateEditOrder";
+import OrdersTable from "../components/custom/OrdersTable";
 
 
 
@@ -55,21 +56,9 @@ const Orders = () => {
           <StaticCard key={index} title={data.title} card={data.card} />
         ))}
       </div>
-      <div className="w-full flex  justify-between lg:flex-column p-4">
-        <div className="w-full lg:w-1/2">
-          <Input
-          placeholder="Search by user or tracking ID"
-          
-          value={searchQuery}
-          onChange={handleSearch}
-          size="large"
-          className="  "
-        />
-        </div>
-        <CreateEditOrder />
-        </div>
+    
       <div className="w-full p-4 flex flex-col lg:flex-row justify-stretch gap-4 rounded-lg ">
-        <div className="bg-white w-full lg:w-1/2 border border-gray-200 rounded-lg p-4">
+        <div className="bg-white w-full lg:w-1/3 border border-gray-200 rounded-lg p-4">
           <List
         header={
           <div className="w-full flex flex-row justify-between">
@@ -99,31 +88,28 @@ const Orders = () => {
         )}
           />
         </div>
-        <div className="bg-white w-full lg:w-1/2 border border-gray-200 rounded-lg p-4">
-          <List
-        header={<p className="font-semibold">Delayed Orders</p>}
-        itemLayout="horizontal"
-        dataSource={filteredData}
-        renderItem={(item, index) => (
-          <List.Item
-            key={index}
-            actions={[
-          <a
-            key="list-loadmore-more"
-            onClick={() => handleNavigation(item.id)}
-          >
-            more
-          </a>,
-            ]}
-          >
-            <List.Item.Meta
-          avatar={<Avatar src={Package} />}
-          title={` ${item.customerName}`}
-          description={`Items: ${item.items.join(", ")}`}
-            />
-          </List.Item>
-        )}
-          />
+        <div className="bg-white w-full lg:w-2-3 border border-gray-200 rounded-lg p-4">
+  
+          <p className="font-semibold">Next Shipment</p>
+          {/* <hr className="text-gray-200 m-4"/> */}
+          <Divider/>
+
+        <div className="m-2 w-full flex  justify-between lg:flex-column ">
+        <div className="w-full lg:w-1/2">
+          <Input
+          placeholder="Search by user or tracking ID"
+          
+          value={searchQuery}
+          onChange={handleSearch}
+          size="large"
+          className="  "
+        />
+        </div>
+        <CreateEditOrder />
+        </div>
+        
+        
+          <OrdersTable />
         </div>
       </div>
      
