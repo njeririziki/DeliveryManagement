@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   TeamOutlined,
+  // HomeOutlined.
   GlobalOutlined,
   LogoutOutlined,
   FileTextOutlined,
@@ -37,7 +38,7 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  // getItem("Dashboard", "dashboard", <TeamOutlined />),
+  // getItem("Dashboard", "dashboard", <HomeOutlined />),
   getItem("Orders", "orders", <FileTextOutlined />),
   getItem("Users", "users", <TeamOutlined />),
   getItem("Deliveries", "delivery", <GlobalOutlined />),
